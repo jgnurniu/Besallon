@@ -36,7 +36,6 @@
   transform: translate(-50%, -50%);
   transition: width 0.35s cubic-bezier(0.22,1,0.36,1), height 0.35s cubic-bezier(0.22,1,0.36,1), border-color 0.2s ease;
 }
-a:hover ~ .cursor, button:hover ~ .cursor { width: 20px; height: 20px; }
 
 /* ─── Variables ─── */
 :root {
@@ -318,7 +317,6 @@ body::before {
   overflow: hidden;
 }
 
-/* Animated radial shimmer */
 .hero-shimmer {
   position: absolute;
   inset: 0;
@@ -409,29 +407,45 @@ body::before {
 .star-icon { color: #facc15; font-size: 13px; }
 .proof-text { color: rgba(255,255,255,0.35); font-size: 0.76rem; font-family: var(--sans); }
 
-/* Hero visual */
-.hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+/* ── Hero visual — imagen sin contenedor redondeado ── */
+.hero-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
 .hero-img-wrap {
   position: relative;
-  width: 320px; height: 460px;
+  width: 320px;
+  height: 500px;
+  flex-shrink: 0;
 }
+
 .hero-img-wrap img {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 28px;
-  filter: saturate(1.1);
+  object-position: top center;
+  /* sin border-radius: imagen de cuerpo completo sin marco */
+  border-radius: 0;
+  filter: saturate(1.15);
 }
+
+/* Glow suave en la base */
 .hero-img-glow {
-  position: absolute; inset: 0;
-  border-radius: 28px;
-  background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(124,58,237,0.55) 0%, rgba(168,85,247,0.18) 50%, transparent 100%);
-}
-.hero-img-border {
-  position: absolute; inset: 0;
-  border-radius: 28px;
-  border: 1px solid rgba(168,85,247,0.2);
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 50%;
+  background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(124,58,237,0.65) 0%, rgba(168,85,247,0.2) 55%, transparent 100%);
   pointer-events: none;
 }
+
+/* Borde ocultado — la imagen va sin marco */
+.hero-img-border { display: none; }
 
 /* Floating cards */
 .float-card {
@@ -452,9 +466,10 @@ body::before {
 @keyframes floatCard2 { 0%,100%{transform:translateY(0) rotate(1deg)} 50%{transform:translateY(-10px) rotate(-1deg)} }
 @keyframes floatCard3 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 
-.card-top    { top: -16px; right: -28px; }
-.card-mid    { top: 38%; right: -44px; }
-.card-bottom { bottom: -16px; right: -16px; }
+/* Cards posicionadas a la derecha de la imagen */
+.card-top    { top: 20px;   right: -195px; width: 190px; }
+.card-mid    { top: 40%;    right: -195px; width: 190px; }
+.card-bottom { bottom: 60px; right: -195px; width: 190px; }
 
 .float-card-inner { display: flex; align-items: center; gap: 10px; }
 .card-icon {
@@ -568,7 +583,6 @@ section { padding: 100px 0; position: relative; overflow: hidden; }
 }
 .section-label svg { width: 12px; height: 12px; }
 
-/* Section divider shimmer line */
 .shimmer-divider {
   width: 60px; height: 2px;
   background: linear-gradient(90deg, var(--accent), #c084fc, var(--accent));
@@ -598,7 +612,6 @@ section { padding: 100px 0; position: relative; overflow: hidden; }
   overflow: hidden;
   transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), border-color 0.3s, background 0.3s, box-shadow 0.3s;
 }
-/* Spotlight hover effect */
 .service-card::before {
   content: '';
   position: absolute;
@@ -637,7 +650,6 @@ section { padding: 100px 0; position: relative; overflow: hidden; }
   margin-top: 60px;
   position: relative;
 }
-/* Animated connector */
 .steps-connector {
   position: absolute;
   top: 38px;
@@ -909,17 +921,22 @@ footer {
 }
 .stagger-child.visible { opacity: 1; transform: translateY(0); }
 
-/* Magnetic button effect area */
 .magnetic { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
 
 /* ══════════════════════════════
    RESPONSIVE
 ══════════════════════════════ */
+@media (max-width: 1200px) {
+  /* En pantallas medianas las cards no caben fuera, las reposicionamos */
+  .card-top    { top: -16px; right: -20px; width: 170px; }
+  .card-mid    { top: 38%;   right: -20px; width: 170px; }
+  .card-bottom { bottom: -16px; right: -10px; width: 170px; }
+}
 @media (max-width: 1024px) {
-  .hero-grid    { grid-template-columns: 1fr; }
-  .hero-visual  { display: none; }
-  .pros-grid    { grid-template-columns: 1fr; gap: 40px; }
-  .steps-grid   { grid-template-columns: repeat(2, 1fr); }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .pros-grid { grid-template-columns: 1fr; gap: 40px; }
+  .steps-grid { grid-template-columns: repeat(2, 1fr); }
   .steps-connector { display: none; }
   .services-grid { grid-template-columns: repeat(2, 1fr); }
   .testimonials-grid { grid-template-columns: 1fr 1fr; }
@@ -1063,9 +1080,9 @@ footer {
             <div class="hero-img-wrap hero-visual-animate">
               <img src="https://bellason.mx/hero-professional.png" alt="Profesional de belleza Bellason" loading="eager" />
               <div class="hero-img-glow" aria-hidden="true"></div>
-              <div class="hero-img-border" aria-hidden="true"></div>
             </div>
 
+            <!-- Card 1: Verificadas -->
             <div class="float-card card-top float-card-animate card-1" aria-hidden="true">
               <div class="float-card-inner">
                 <div class="card-icon">
@@ -1076,9 +1093,10 @@ footer {
                   <p class="card-sub">con INE</p>
                 </div>
               </div>
-              <p class="card-desc">Cada profesional es validada manualmente</p>
+              <p class="card-desc">Cada profesional es validada manualmente antes de operar</p>
             </div>
 
+            <!-- Card 2: Rating -->
             <div class="float-card card-mid float-card-animate card-2" aria-hidden="true">
               <div class="rating-row">
                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="#facc15" stroke="#facc15" stroke-width="1" style="flex-shrink:0"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -1094,6 +1112,7 @@ footer {
               </div>
             </div>
 
+            <!-- Card 3: Sin sorpresas -->
             <div class="float-card card-bottom float-card-animate card-3" aria-hidden="true">
               <div class="float-card-inner">
                 <div class="card-icon">
@@ -1101,7 +1120,7 @@ footer {
                 </div>
                 <div>
                   <p class="card-title">Sin sorpresas</p>
-                  <p class="card-sub">Precio acordado antes</p>
+                  <p class="card-sub">Precio acordado antes<br>de que lleguen a tu casa</p>
                 </div>
               </div>
             </div>
@@ -1477,7 +1496,6 @@ footer {
   }
   animateRing();
 
-  /* Scale cursor on interactive elements */
   document.querySelectorAll('a, button, .service-card, .testimonial-card, .metric-card, .perk-item').forEach(el => {
     el.addEventListener('mouseenter', () => {
       cursor.style.width = '20px';
@@ -1518,14 +1536,6 @@ footer {
   /* ── Active nav link ── */
   const sections = document.querySelectorAll("section[id]");
   const navLinks = document.querySelectorAll(".nav-links a[href^='#']");
-  new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(a => a.classList.remove("active"));
-        document.querySelector(`.nav-links a[href="#${entry.target.id}"]`)?.classList.add("active");
-      }
-    });
-  }, { rootMargin: "-40% 0px -55% 0px" }).observe(sections[0] || document.body);
   sections.forEach(s => {
     new IntersectionObserver((entries) => {
       entries.forEach(entry => {
